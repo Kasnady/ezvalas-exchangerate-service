@@ -11,6 +11,9 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->post('/update',							'ExchangeRateController@update');
+
+$router->get('/version', function () use ($router) {
+	// Framework Version
+	return $router->app->version();
 });
