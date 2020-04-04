@@ -73,7 +73,8 @@ $app->configure('logging');
 */
 
 $app->middleware([
-    App\Http\Middleware\CorsMiddleware::class
+    App\Http\Middleware\CorsMiddleware::class,
+    App\Http\Middleware\LogAfterRequest::class
 ]);
 
 // $app->routeMiddleware([
