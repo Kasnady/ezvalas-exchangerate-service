@@ -12,6 +12,7 @@
 */
 
 $router->post('/update',							'ExchangeRateController@update');
+$router->get('/list[/{sortBy}/{sortType}]',			'ExchangeRateController@list');
 
 $router->get('/version', function () use ($router) {
 	// Framework Version

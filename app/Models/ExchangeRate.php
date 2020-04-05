@@ -4,10 +4,11 @@ namespace App\Models;
 
 use App\traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ExchangeRate extends Model
 {
-    use Uuids;
+    use SoftDeletes, Uuids;
 
 	/**
 	 * The attributes that are mass assignable.

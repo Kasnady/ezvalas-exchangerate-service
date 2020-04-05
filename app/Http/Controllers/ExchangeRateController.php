@@ -25,6 +25,7 @@ class ExchangeRateController extends Controller
 
 	/**
 	 * Save Exchange Rate
+	 *
 	 * @param  object $data
 	 * @param  int    $id
 	 * @return \App\Models\ExchangeRate
