@@ -3,9 +3,12 @@
 namespace App\Models\Views;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ExchangeRateWithCurrencyCodeView extends Model
 {
+    use SoftDeletes;
+
     /**
      * The database table used by the model.
      *
