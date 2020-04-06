@@ -60,6 +60,7 @@ $app->singleton(
 */
 
 $app->configure('logging');
+$app->configure('database');
 
 /*
 |--------------------------------------------------------------------------

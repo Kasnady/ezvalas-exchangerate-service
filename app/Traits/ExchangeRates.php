@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\ExchangeRate as ExchangeRateModel;
+use App\Models\Views\ExchangeRateWithCurrencyCodeView;
 use App\Statics\ResponseCode;
 use App\Traits\ApiResponser;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,8 +23,7 @@ trait ExchangeRates
 	 */
     public function list($sortBy='from_country_id', $sortType='ASC')
     {
-    	// $exchangeRates = $this->list($sortBy, $sortType);
-    	$exchangeRates = ExchangeRateModel::orderBy($sortBy, $sortType)->get();
+    	$exchangeRates = ExchangeRateWithCurrencyCodeView::orderBy($sortBy, $sortType)->get();
 
     	return $this->successResponse($exchangeRates, ResponseCode::GET_EXCHANGE_RATE_LIST_SUCCESS);
     }
