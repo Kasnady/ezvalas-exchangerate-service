@@ -50,6 +50,13 @@ class ExchangeRateController extends Controller
 		$exRate->saveOrFail();
 		Log::info("Adding/Updating Rate Succeed");
 
+		if ($data->isDelete)
+		{
+			$exRate->delete();
+		} else {
+			$exRate->restore();
+		}
+
 		return $exRate;
 	}
 
@@ -72,6 +79,7 @@ class ExchangeRateController extends Controller
 			'buyRate'=>'required|numeric|min:0|lt:baseRate',
 			'baseRate'=>'required|numeric|min:0',
 			'sellRate'=>'required|numeric|min:0|gt:baseRate',
+			'isDelete'=>'nullable|boolean',
 			'updatedBy'=>'required|uuid'
 		];
 

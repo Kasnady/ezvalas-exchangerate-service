@@ -12,32 +12,40 @@ use Log;
 
 trait ExchangeRates
 {
-    use ApiResponser;
+	use ApiResponser;
 
 	/**
 	 * Get All Exchange Rate in DB
 	 *
 	 * @param  string $sortBy
 	 * @param  string $sortType
+	 * @param  \Illuminate\Http\Request  $request
 	 * @return mixed
 	 */
-    public function list($sortBy='from_country_id', $sortType='ASC')
-    {
-    	$exchangeRates = ExchangeRateWithCurrencyCodeView::orderBy($sortBy, $sortType)->get();
+	public function list($sortBy='from_country_id', $sortType='ASC', Request $request)
+	{
+		$exchangeRates = ExchangeRateWithCurrencyCodeView::orderBy($sortBy, $sortType);
 
-    	return $this->successResponse($exchangeRates, ResponseCode::GET_EXCHANGE_RATE_LIST_SUCCESS);
-    }
+		if ($request && $request->withDeleted)
+		{
+			$exchangeRates = $exchangeRates->withTrashed();
+		}
+
+		$exchangeRates = $exchangeRates->get();
+
+		return $this->successResponse($exchangeRates, ResponseCode::GET_EXCHANGE_RATE_LIST_SUCCESS);
+	}
 
 	/**
 	 * Update Exchange Rate
 	 *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return mixed
 	 */
 	public function update(Request $request)
 	{
-        $validateResult = $this->validator($request->all());
-        // is Validation Failed
+		$validateResult = $this->validator($request->all());
+		// is Validation Failed
 		if ($validateResult->fails()) {
 			Log::info("Update Rate - Validation Failed");
 			Log::info($validateResult->errors());
