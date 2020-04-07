@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\InputDataInsufficientException;
 use App\Models\ExchangeRate as ExchangeRateModel;
+use App\Models\Views\ExchangeRateWithCurrencyCodeView;
 use App\Traits\ExchangeRates;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,6 +22,32 @@ class ExchangeRateController extends Controller
 	public function __construct()
 	{
 		//
+	}
+
+	/**
+	 * Get Exchange Rate data
+	 *
+	 * @param  string $sortBy
+	 * @param  string $sortType
+	 * @param  bool   $withDeleted
+	 * @param  string $withDeleted
+	 * @return mixed
+	 */
+	protected function get($sortBy, $sortType, $withDeleted=false, $id=null)
+	{
+		$sortBy = $sortBy ?? 'from_country_id';
+		$sortType = $sortType ?? 'ASC';
+
+		$exchangeRate = ExchangeRateWithCurrencyCodeView::orderBy($sortBy, $sortType);
+
+		if ($withDeleted) {
+			$exchangeRate = $exchangeRate->withTrashed();
+		}
+
+		if (!empty($id)) {
+			return $exchangeRate->whereId($id)->first();
+		}
+		return $exchangeRate->get();
 	}
 
 	/**

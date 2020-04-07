@@ -2,6 +2,7 @@
 
 namespace App\Models\Views;
 
+use App\Models\ExchangeRateSetting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -22,4 +23,13 @@ class ExchangeRateWithCurrencyCodeView extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * Relation
+     */
+
+    public function setting()
+    {
+        return $this->hasOne(ExchangeRateSetting::class, 'exchange_rate_id');
+    }
 }

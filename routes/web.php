@@ -19,4 +19,12 @@ $router->get('/version', function () use ($router) {
 	return $router->app->version();
 });
 
-$router->get('/{id}',								'ExchangeRateController@find');
+$router->group(['prefix' => '/{id}'], function () use ($router)
+{
+	$router->get('/',								'ExchangeRateController@find');
+
+	$router->group(['prefix' => 'setting'], function() use ($router)
+	{
+		$router->get('/',							'ExchangeRateController@setting');
+	});
+});

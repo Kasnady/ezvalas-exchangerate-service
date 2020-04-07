@@ -17,52 +17,34 @@ trait ExchangeRates
 	/**
 	 * Find Exchange Rate data with it's ID
 	 *
-	 * @param  uuid                      $id
-	 * @param  \Illuminate\Http\Request  $request
+	 * @param  uuid $id
 	 * @return mixed
 	 */
-	public function find(string $id, Request $request)
+	public function find(string $id)
 	{
-		$exchangeRate = $this->get(null, null, $request->withDeleted, $id);
+		$exchangeRate = ExchangeRateWithCurrencyCodeView::find($id);
 
-		if ($exchangeRate) {
-			return $this->successResponse($exchangeRate, ResponseCode::FIND_EXCHANGE_RATE_SUCCESS);
-		}
-		return $this->successResponse($exchangeRate, ResponseCode::FIND_EXCHANGE_RATE_FAILURE);
-	}
-
-	/**
-	 * Find Exchange Rate setting with Exchange Rate ID
-	 *
-	 * @param  uuid                      $id
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return mixed
-	 */
-	public function setting(string $id, Request $request)
-	{
-		$exRateSetting = $this->get(null, null, $request->withDeleted, $id);
-
-		if ($exRateSetting) {
-			$exRateSetting = $exRateSetting->setting;
-
-			return $this->successResponse($exRateSetting,
-				ResponseCode::GET_EXCHANGE_RATE_SETTING_BY_EXRATE_ID_SUCCESS);
-		}
-		return $this->successResponse($exRateSetting,
-			ResponseCode::GET_EXCHANGE_RATE_SETTING_BY_EXRATE_ID_FAILURE);
+		return $this->successResponse($exchangeRate, ResponseCode::FIND_EXCHANGE_RATE_SUCCESS);
 	}
 
 	/**
 	 * Get All Exchange Rate in DB
 	 *
-	 * @param  string                    $sortBy
-	 * @param  string                    $sortType
+	 * @param  string $sortBy
+	 * @param  string $sortType
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return mixed
 	 */
 	public function list($sortBy='from_country_id', $sortType='ASC', Request $request)
 	{
-		$exchangeRates = $this->get($sortBy, $sortType, $request->withDeleted);
+		$exchangeRates = ExchangeRateWithCurrencyCodeView::orderBy($sortBy, $sortType);
+
+		if ($request && $request->withDeleted)
+		{
+			$exchangeRates = $exchangeRates->withTrashed();
+		}
+
+		$exchangeRates = $exchangeRates->get();
 
 		return $this->successResponse($exchangeRates, ResponseCode::GET_EXCHANGE_RATE_LIST_SUCCESS);
 	}

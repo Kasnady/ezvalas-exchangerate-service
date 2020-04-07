@@ -13,7 +13,7 @@ class CreateExchangeRateLogTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('exchange_rate_log', function (Blueprint $table) {
+		Schema::create('exchange_rate_logs', function (Blueprint $table) {
 			$table->bigIncrements('log_id');
 			$table->uuid('id');
 			$table->unsignedTinyInteger('from_country_id')->index();
@@ -36,6 +36,6 @@ class CreateExchangeRateLogTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('exchange_rate_log');
+		Schema::dropIfExists('exchange_rate_logs');
 	}
 }

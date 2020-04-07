@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExchangeRateSettingTable extends Migration
+class CreateExchangeRateSettingLogTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateExchangeRateSettingTable extends Migration
      */
     public function up()
     {
-        Schema::create('exchange_rate_setting', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('exchange_rate_id')->unique()->index();
-            $table->decimal('min_sell_amount')->default(0);
+        Schema::create('exchange_rate_setting_logs', function (Blueprint $table) {
+            $table->bigIncrements('log_id');
+            $table->uuid('id')->index();
+            $table->uuid('exchange_rate_id')->index();
+            $table->decimal('min_sell_amount');
             $table->uuid('created_by');
             $table->uuid('updated_by');
             $table->timestamps();
+            $table->timeStamp('audited_at')->useCurrent();
         });
     }
 
@@ -30,6 +32,6 @@ class CreateExchangeRateSettingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exchange_rate_setting');
+        Schema::dropIfExists('exchange_rate_setting_logs');
     }
 }
