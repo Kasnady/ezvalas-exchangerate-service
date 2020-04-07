@@ -10,4 +10,6 @@ class ResponseCode
     const UPDATE_EXCHANGE_RATE_VALIDATION_FAILED				= '80100004';
 
     const GET_EXCHANGE_RATE_LIST_SUCCESS						= '80100005';
+
+    const FIND_EXCHANGE_RATE_SUCCESS							= '80100006';
 }

@@ -15,6 +15,19 @@ trait ExchangeRates
 	use ApiResponser;
 
 	/**
+	 * Find Exchange Rate data with it's ID
+	 *
+	 * @param  uuid $id
+	 * @return mixed
+	 */
+	public function find(string $id)
+	{
+		$exchangeRate = ExchangeRateWithCurrencyCodeView::find($id);
+
+		return $this->successResponse($exchangeRate, ResponseCode::FIND_EXCHANGE_RATE_SUCCESS);
+	}
+
+	/**
 	 * Get All Exchange Rate in DB
 	 *
 	 * @param  string $sortBy

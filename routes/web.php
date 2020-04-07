@@ -18,3 +18,5 @@ $router->get('/version', function () use ($router) {
 	// Framework Version
 	return $router->app->version();
 });
+
+$router->get('/{id}',								'ExchangeRateController@find');
