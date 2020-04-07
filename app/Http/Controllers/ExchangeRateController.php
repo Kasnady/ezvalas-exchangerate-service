@@ -40,6 +40,7 @@ class ExchangeRateController extends Controller
 			Log::info("Adding Rate");
 			$exRate = new ExchangeRateModel();
 			$exRate->created_by = $data->updatedBy;
+			$exRate->delete(); // should be inactive at first
 		}
 		$exRate->from_country_id = $data->fromCountryId;
 		$exRate->to_country_id = $data->toCountryId;
