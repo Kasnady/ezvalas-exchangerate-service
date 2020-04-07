@@ -51,11 +51,21 @@ class ExchangeRateController extends Controller
 		$exRate->saveOrFail();
 		Log::info("Adding/Updating Rate Succeed");
 
+			Log::info("Setting#".json_encode($exRate->setting()));
 		if ($data->isDelete)
 		{
 			$exRate->delete();
 		} else {
-			$exRate->restore();
+			Log::info("Setting#".json_encode($exRate->setting()));
+
+			if ($exRate->isAllowPublish())
+			{
+				$exRate->restore();
+			}
+			else
+			{
+				return "Unable to publish the exchange rate since not yet set the minimal sell rate";
+			}
 		}
 
 		return $exRate;

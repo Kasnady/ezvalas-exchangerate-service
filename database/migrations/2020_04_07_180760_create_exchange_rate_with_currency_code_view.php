@@ -19,7 +19,12 @@ class CreateExchangeRateWithCurrencyCodeView extends Migration
             SELECT
                 ex_rate.*,
                 from_c.currency_code AS from_currency_code,
-                to_c.currency_code AS to_currency_code
+                to_c.currency_code AS to_currency_code,
+                (
+                    SELECT count(ers.id) > 0
+                    FROM exchange_rate_setting ers
+                    WHERE ers.exchange_rate_id = ex_rate.id
+                ) AS allow_update_public
             FROM exchange_rates ex_rate
                 LEFT JOIN ".$ex_info.".countries from_c ON ex_rate.from_country_id = from_c.id
                 LEFT JOIN ".$ex_info.".countries to_c ON ex_rate.to_country_id = to_c.id");

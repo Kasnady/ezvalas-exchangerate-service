@@ -57,8 +57,6 @@ trait ExchangeRates
 			$updateResult = $this->save($request, $request->id);
 			if ($updateResult instanceof \App\Models\ExchangeRate)
 			{
-				// Update/Add Succeed
-				Log::info("END# Succeed Updating Rate");
 				return $this->successResponse($updateResult, ResponseCode::UPDATE_EXCHANGE_RATE_SUCCESS);
 			}
 			else

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ExchangeRate extends Model
 {
-    use SoftDeletes, Uuids;
+	use SoftDeletes, Uuids;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -28,4 +28,23 @@ class ExchangeRate extends Model
 	protected $hidden = [
 
 	];
+
+	/**
+	 * Is Exchange Rate allowed to publish (restore the deleted_at)
+	 *
+	 * @return bool
+	 */
+	public function isAllowPublish()
+	{
+		return (isset($this->setting()->min_sell_amount) && $this->setting()->min_sell_amount >= 0);
+	}
+
+	/**
+	 * Relation
+	 */
+
+	public function setting()
+	{
+		return $this->hasOne(ExchangeRateSetting::class, 'id', 'exchange_rate_id');
+	}
 }
