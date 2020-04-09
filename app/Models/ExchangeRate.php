@@ -10,6 +10,18 @@ class ExchangeRate extends Model
 {
 	use SoftDeletes, Uuids;
 
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::updating(function ($exchangeRate) {
+        	LogHelper::addLogFrom($exchangeRate, new ExchangeRateLog);
+        });
+    }
+
 	/**
 	 * The attributes that are mass assignable.
 	 *

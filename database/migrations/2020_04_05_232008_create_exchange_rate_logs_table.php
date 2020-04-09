@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExchangeRateLogTable extends Migration
+class CreateExchangeRateLogsTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -25,7 +25,8 @@ class CreateExchangeRateLogTable extends Migration
 			$table->uuid('updated_by');
 			$table->softDeletes();
 			$table->timestamps();
-			$table->timeStamp('audited_at')->useCurrent();
+			$table->timeStamp('log_deleted_at')->nullable();
+			$table->timeStamp('logged_at')->useCurrent();
 		});
 	}
 
