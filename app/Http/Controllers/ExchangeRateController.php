@@ -45,7 +45,7 @@ class ExchangeRateController extends Controller
 		}
 
 		if (!empty($id)) {
-			return $exchangeRate->whereId($id)->first();
+			return $exchangeRate->find($id);
 		}
 		return $exchangeRate->get();
 	}
@@ -61,10 +61,11 @@ class ExchangeRateController extends Controller
 	{
 		if ($id) {
 			// Got ID
-			Log::info("Updating Rate");
+			Log::info("Updating Rate - find Rate data for ID# $id first");
 			$exRate = ExchangeRateModel::withTrashed()->findOrFail($id);
 		} else {
 			Log::info("Adding Rate");
+
 			$exRate = new ExchangeRateModel();
 			$exRate->created_by = $data->updatedBy;
 			$exRate->delete(); // should be inactive at first
@@ -78,13 +79,10 @@ class ExchangeRateController extends Controller
 		$exRate->saveOrFail();
 		Log::info("Adding/Updating Rate Succeed");
 
-			Log::info("Setting#".json_encode($exRate->setting()));
 		if ($data->isDelete)
 		{
 			$exRate->delete();
 		} else {
-			Log::info("Setting#".json_encode($exRate->setting()));
-
 			if ($exRate->isAllowPublish())
 			{
 				$exRate->restore();
