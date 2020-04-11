@@ -112,7 +112,7 @@ class ExchangeRateController extends Controller
 		{
 			$exRate->delete();
 		} else {
-			if ($exRate->isAllowPublish())
+			if ($this->find($id, true)->allow_update_public)
 			{
 				$exRate->restore();
 			}
