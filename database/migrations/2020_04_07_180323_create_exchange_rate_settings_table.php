@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExchangeRateSettingTable extends Migration
+class CreateExchangeRateSettingsTable extends Migration
 {
     /**
      * Run the migrations.

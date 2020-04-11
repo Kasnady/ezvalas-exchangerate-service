@@ -12,19 +12,20 @@
 */
 
 $router->get('/list[/{sortBy}/{sortType}]',			'ExchangeRateController@list');
-$router->post('/update',							'ExchangeRateController@update');
+$router->post('/update',							'ExchangeRateController@updateRate');
 
 $router->get('/version', function () use ($router) {
 	// Framework Version
 	return $router->app->version();
 });
 
-$router->group(['prefix' => '/{id}'], function () use ($router)
+$router->group(['prefix' => '{id}'], function () use ($router)
 {
-	$router->get('/',								'ExchangeRateController@find');
+	$router->get('/',				'ExchangeRateController@findRate');
 
 	$router->group(['prefix' => 'setting'], function() use ($router)
 	{
-		$router->get('/',							'ExchangeRateController@setting');
+		$router->get('/',			'ExchangeRateSettingController@getSetting');
+		$router->post('/',			'ExchangeRateSettingController@updateSetting');
 	});
 });

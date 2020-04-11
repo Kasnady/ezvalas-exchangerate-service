@@ -10,43 +10,27 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Log;
 
-trait ExchangeRates
+trait ExchangeRateSettings
 {
 	use ApiResponser;
 
 	/**
-	 * Find Exchange Rate data with it's ID
+	 * Find Exchange Rate setting with Exchange Rate ID
 	 *
-	 * @param  uuid $id
-	 * @return mixed
-	 */
-	public function find(string $id)
-	{
-		$exchangeRate = ExchangeRateWithCurrencyCodeView::find($id);
-
-		return $this->successResponse($exchangeRate, ResponseCode::FIND_EXCHANGE_RATE_SUCCESS);
-	}
-
-	/**
-	 * Get All Exchange Rate in DB
-	 *
-	 * @param  string $sortBy
-	 * @param  string $sortType
+	 * @param  uuid                      $id
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return mixed
 	 */
-	public function list($sortBy='from_country_id', $sortType='ASC', Request $request)
+	public function getSetting(string $id, Request $request)
 	{
-		$exchangeRates = ExchangeRateWithCurrencyCodeView::orderBy($sortBy, $sortType);
+		$exrSetting = $this->get($id, $request->withDeleted);
 
-		if ($request && $request->withDeleted)
-		{
-			$exchangeRates = $exchangeRates->withTrashed();
+		if ($exrSetting) {
+			return $this->successResponse($exrSetting,
+				ResponseCode::GET_EXCHANGE_RATE_SETTING_BY_EXRATE_ID_SUCCESS);
 		}
-
-		$exchangeRates = $exchangeRates->get();
-
-		return $this->successResponse($exchangeRates, ResponseCode::GET_EXCHANGE_RATE_LIST_SUCCESS);
+		return $this->successResponse("Exchange Rate Setting not found!",
+			ResponseCode::GET_EXCHANGE_RATE_SETTING_BY_EXRATE_ID_FAILURE);
 	}
 
 	/**
@@ -55,35 +39,38 @@ trait ExchangeRates
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return mixed
 	 */
-	public function update(Request $request)
+	public function updateSetting(Request $request)
 	{
 		$validateResult = $this->validator($request->all());
 		// is Validation Failed
 		if ($validateResult->fails()) {
-			Log::info("Update Rate - Validation Failed");
+			Log::info("Update Rate Setting - Validation Failed");
 			Log::info($validateResult->errors());
-			return $this->successResponse($validateResult, ResponseCode::UPDATE_EXCHANGE_RATE_VALIDATION_FAILED);
+			return $this->successResponse($validateResult,
+				ResponseCode::UPDATE_EXCHANGE_RATE_SETTING_VALIDATION_FAILED);
 		}
 
-		$errMsg = "Unknown Error while Adding/Updating Rate";
+		$errMsg = "Unknown Error while Updating Rate Setting";
 		try {
-			$updateResult = $this->save($request, $request->id);
-			if ($updateResult instanceof \App\Models\ExchangeRate)
+			$updateResult = $this->save($request);
+			if ($updateResult instanceof \App\Models\ExchangeRateSetting)
 			{
-				return $this->successResponse($updateResult, ResponseCode::UPDATE_EXCHANGE_RATE_SUCCESS);
+				return $this->successResponse($updateResult,
+					ResponseCode::UPDATE_EXCHANGE_RATE_SETTING_SUCCESS);
 			}
 			else
 			{
-				return $this->successResponse($updateResult, ResponseCode::UPDATE_EXCHANGE_RATE_FAILURE);
+				return $this->successResponse($updateResult,
+					ResponseCode::UPDATE_EXCHANGE_RATE_SETTING_FAILURE);
 			}
 		} catch (ModelNotFoundException $e) {
 			Log::error('ModelNotFoundException'. $e);
-			$errMsg = 'Exchange Rate Model not found! Please contact developer';
+			$errMsg = 'Exchange Rate Setting Model not found! Please contact developer';
 		} catch (\Exception $e) {
 			Log::error('Exception'. $e);
 			$errMsg = $e->getMessage();
 		}
 
-		return $this->successResponse($errMsg, ResponseCode::UPDATE_EXCHANGE_RATE_ERROR);
+		return $this->successResponse($errMsg, ResponseCode::UPDATE_EXCHANGE_RATE_SETTING_ERROR);
 	}
 }

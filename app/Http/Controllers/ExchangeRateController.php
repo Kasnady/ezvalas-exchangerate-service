@@ -14,6 +14,8 @@ class ExchangeRateController extends Controller
 {
 	use ExchangeRates;
 
+	private static $_instance;
+
 	/**
 	 * Create a new controller instance.
 	 *
@@ -25,12 +27,27 @@ class ExchangeRateController extends Controller
 	}
 
 	/**
+	 * Initiate Class
+	 *
+	 * @return self
+	 */
+	public static function getInstance()
+	{
+		if (!(self::$_instance instanceof self))
+		{
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
+	/**
 	 * Get Exchange Rate data
 	 *
-	 * @param  string $sortBy
-	 * @param  string $sortType
-	 * @param  bool   $withDeleted
-	 * @param  string $withDeleted
+	 * @param  string  $sortBy
+	 * @param  string  $sortType
+	 * @param  boolean $withDeleted
+	 * @param  string  $withDeleted
 	 * @return mixed
 	 */
 	protected function get($sortBy, $sortType, $withDeleted=false, $id=null)
@@ -48,6 +65,18 @@ class ExchangeRateController extends Controller
 			return $exchangeRate->find($id);
 		}
 		return $exchangeRate->get();
+	}
+
+	/**
+	 * Find Exchange Rate using ID
+	 *
+	 * @param  string  $id
+	 * @param  boolean $withDeleted
+	 * @return mixed
+	 */
+	public function find($id, $withDeleted=false)
+	{
+		return $this->get(null, null, $withDeleted, $id);
 	}
 
 	/**
@@ -89,7 +118,7 @@ class ExchangeRateController extends Controller
 			}
 			else
 			{
-				return "Unable to publish the exchange rate since not yet set the minimal sell rate";
+				return "Unable to publish exchange rate due to minimal sell rate haven't been set";
 			}
 		}
 

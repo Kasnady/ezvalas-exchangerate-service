@@ -21,35 +21,14 @@ trait ExchangeRates
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return mixed
 	 */
-	public function find(string $id, Request $request)
+	public function findRate(string $id, Request $request)
 	{
-		$exchangeRate = $this->get(null, null, $request->withDeleted, $id);
+		$exchangeRate = $this->find($id, $request->withDeleted);
 
 		if ($exchangeRate) {
 			return $this->successResponse($exchangeRate, ResponseCode::FIND_EXCHANGE_RATE_SUCCESS);
 		}
 		return $this->successResponse($exchangeRate, ResponseCode::FIND_EXCHANGE_RATE_FAILURE);
-	}
-
-	/**
-	 * Find Exchange Rate setting with Exchange Rate ID
-	 *
-	 * @param  uuid                      $id
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return mixed
-	 */
-	public function setting(string $id, Request $request)
-	{
-		$exRateSetting = $this->get(null, null, $request->withDeleted, $id);
-
-		if ($exRateSetting) {
-			$exRateSetting = $exRateSetting->setting;
-
-			return $this->successResponse($exRateSetting,
-				ResponseCode::GET_EXCHANGE_RATE_SETTING_BY_EXRATE_ID_SUCCESS);
-		}
-		return $this->successResponse($exRateSetting,
-			ResponseCode::GET_EXCHANGE_RATE_SETTING_BY_EXRATE_ID_FAILURE);
 	}
 
 	/**
@@ -73,7 +52,7 @@ trait ExchangeRates
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return mixed
 	 */
-	public function update(Request $request)
+	public function updateRate(Request $request)
 	{
 		$validateResult = $this->validator($request->all());
 		// is Validation Failed

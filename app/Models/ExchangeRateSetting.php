@@ -9,6 +9,18 @@ class ExchangeRateSetting extends Model
 {
     use Uuids;
 
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::updating(function ($exrSetting) {
+        	LogHelper::addLogFrom($exrSetting, new ExchangeRateSettingLog);
+        });
+    }
+
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -26,4 +38,13 @@ class ExchangeRateSetting extends Model
 	protected $hidden = [
 
 	];
+
+	/**
+	 * Relation
+	 */
+
+	public function exchangeRate()
+	{
+		return $this->belongsTo(ExchangeRate::class, 'exchange_rate_id', 'id');
+	}
 }

@@ -24,6 +24,7 @@ class CreateExchangeRateWithCurrencyCodeView extends Migration
 					SELECT count(ers.id) > 0
 					FROM exchange_rate_settings ers
 					WHERE ers.exchange_rate_id = ex_rate.id
+						AND ers.min_sell_amount > 0
 				) AS allow_update_public
 			FROM exchange_rates ex_rate
 				LEFT JOIN ".$ex_info.".countries from_c ON ex_rate.from_country_id = from_c.id
