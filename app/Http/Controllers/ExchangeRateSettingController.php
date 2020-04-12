@@ -50,6 +50,7 @@ class ExchangeRateSettingController extends Controller
 		Log::info("Saving Rate Setting");
 		$exrSetting = ExchangeRateSettingModel::findOrFail($data->id);
 		$exrSetting->min_sell_amount = $data->minSellAmount;
+		$exrSetting->max_sell_amount = $data->maxSellAmount;
 		$exrSetting->updated_by = $data->updatedBy;
 		$exrSetting->saveOrFail();
 		Log::info("Saving Rate Setting Succeed");
@@ -70,7 +71,8 @@ class ExchangeRateSettingController extends Controller
 
 		$rules = [
 			'id'=> 'uuid|exists:exchange_rate_settings',
-			'minSellAmount'=>'required|numeric|min:1',
+			'minSellAmount'=>'required|numeric|min:1|lte:maxSellAmount',
+			'maxSellAmount'=>'required|numeric|min:1|gte:minSellAmount',
 			'updatedBy'=>'required|uuid'
 		];
 

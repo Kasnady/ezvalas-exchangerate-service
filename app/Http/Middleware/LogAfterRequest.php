@@ -8,8 +8,6 @@ use Log;
 
 final class LogAfterRequest
 {
-	private $logger;
-
 	public function handle(Request $request, Closure $next)
 	{
 		$response = $next($request);

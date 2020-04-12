@@ -17,6 +17,7 @@ class CreateExchangeRateSettingsTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('exchange_rate_id')->unique()->index();
             $table->decimal('min_sell_amount')->default(0);
+            $table->decimal('max_sell_amount')->default(0);
             $table->uuid('created_by');
             $table->uuid('updated_by');
             $table->timestamps();
