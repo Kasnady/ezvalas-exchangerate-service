@@ -15,7 +15,7 @@ class CreateExchangeRateLogsTable extends Migration
 	{
 		Schema::create('exchange_rate_logs', function (Blueprint $table) {
 			$table->bigIncrements('log_id');
-			$table->uuid('id');
+			$table->uuid('id')->index();
 			$table->unsignedTinyInteger('from_country_id')->index();
 			$table->unsignedTinyInteger('to_country_id')->index();
 			$table->decimal('buy_rate', 15, 7);
