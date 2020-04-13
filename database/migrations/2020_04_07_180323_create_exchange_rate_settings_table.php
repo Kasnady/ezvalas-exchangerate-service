@@ -13,7 +13,9 @@ class CreateExchangeRateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('exchange_rate_settings', function (Blueprint $table) {
+        $ex_internal = config('database.services.internal');
+
+        Schema::create('exchange_rate_settings', function (Blueprint $table) use ($ex_internal) {
             $table->uuid('id')->primary();
             $table->uuid('exchange_rate_id')->unique()->index();
             $table->decimal('multiply_amount')->default(1)
@@ -23,6 +25,10 @@ class CreateExchangeRateSettingsTable extends Migration
             $table->uuid('created_by');
             $table->uuid('updated_by');
             $table->timestamps();
+
+            $table->foreign('exchange_rate_id')->references('id')->on('exchange_rates');
+            $table->foreign('created_by')->references('id')->on($ex_internal.'.users');
+            $table->foreign('updated_by')->references('id')->on($ex_internal.'.users');
         });
     }
 

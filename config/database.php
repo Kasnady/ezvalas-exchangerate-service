@@ -132,7 +132,8 @@ return [
      */
 
     'services' => [
-        'info' => env('DB_DATABASE_INFO')
+        'info' => env('DB_DATABASE_INFO'),
+        'internal' => env('DB_DATABASE_INTERNAL'),
     ]
 
 ];

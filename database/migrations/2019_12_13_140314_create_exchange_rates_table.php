@@ -13,7 +13,10 @@ class CreateExchangeRatesTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('exchange_rates', function (Blueprint $table) {
+		$ex_info = config('database.services.info');
+		$ex_internal = config('database.services.internal');
+
+		Schema::create('exchange_rates', function (Blueprint $table) use ($ex_internal, $ex_info) {
 			$table->uuid('id')->primary();
 			$table->unsignedTinyInteger('from_country_id')->index();
 			$table->unsignedTinyInteger('to_country_id')->index();
@@ -29,11 +32,11 @@ class CreateExchangeRatesTable extends Migration
 
 			$table->unique(['from_country_id', 'to_country_id']);
 
-			$table->foreign('from_country_id')->references('id')->on('ex_info.countries');
-			$table->foreign('to_country_id')->references('id')->on('ex_info.countries');
+			$table->foreign('from_country_id')->references('id')->on($ex_info.'.countries');
+			$table->foreign('to_country_id')->references('id')->on($ex_info.'.countries');
 
-			$table->foreign('created_by')->references('id')->on('ex_internal.users');
-			$table->foreign('updated_by')->references('id')->on('ex_internal.users');
+			$table->foreign('created_by')->references('id')->on($ex_internal.'.users');
+			$table->foreign('updated_by')->references('id')->on($ex_internal.'.users');
 		});
 	}
 
