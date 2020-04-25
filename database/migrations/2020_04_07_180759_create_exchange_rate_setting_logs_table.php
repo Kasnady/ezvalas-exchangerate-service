@@ -17,9 +17,9 @@ class CreateExchangeRateSettingLogsTable extends Migration
             $table->bigIncrements('log_id');
             $table->uuid('id')->index();
             $table->uuid('exchange_rate_id')->index();
-            $table->decimal('multiply_amount');
-            $table->decimal('min_sell_amount');
-            $table->decimal('max_sell_amount');
+            $table->decimal('multiply_amount', 11, 2);
+            $table->decimal('min_sell_amount', 11, 2);
+            $table->decimal('max_sell_amount', 11, 2);
             $table->uuid('created_by');
             $table->uuid('updated_by');
             $table->timestamps();

@@ -12,7 +12,9 @@ class ExchangeRateSettingLog extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-
+		'id', 'exchange_rate_id', 'multiply_amount', 'min_sell_amount',
+		'max_sell_amount', 'created_by', 'updated_by', 'created_at',
+		'updated_at'
 	];
 
 	/**

@@ -15,7 +15,9 @@ class ExchangeRateLog extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-
+		'id', 'from_country_id', 'to_country_id', 'buy_rate', 'base_rate',
+		'sell_rate', 'created_by', 'updated_by', 'deleted_at', 'created_at',
+		'updated_at'
 	];
 
 	/**

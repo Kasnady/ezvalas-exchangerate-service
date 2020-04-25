@@ -7,8 +7,17 @@ use Log;
 
 class InputDataInsufficientException extends Exception
 {
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct(array $request)
+	{
+		\Log::error('Request Data: '.json_encode($request));
 
-	private $msg="Input data insufficient exception!";
+		$this->message = "Input data insufficient or empty";
+	}
 
 	/**
 	 * Report the exception.
@@ -18,21 +27,5 @@ class InputDataInsufficientException extends Exception
 	public function report()
 	{
 		Log::debug('Input data insufficient');
-	}
-
-	/**
-	 * Create a new validation exception from a plain message.
-	 *
-	 * @param  string  $message
-	 * @return static
-	 */
-	public static function withMessage($message="")
-	{
-		self::$msg = $message;
-	}
-
-	public static function message()
-	{
-		return self::$msg;
 	}
 }

@@ -13,10 +13,6 @@ class LogHelper
 	 */
 	public static function addLogFrom($ori, $logClass)
 	{
-		foreach ($ori->toArray() as $key => $value) {
-			$logClass[$key] = $value;
-		}
-
-		$logClass->saveOrFail();
+		$logClass::create($ori->toArray());
 	}
 }

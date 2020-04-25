@@ -18,10 +18,10 @@ class CreateExchangeRateSettingsTable extends Migration
         Schema::create('exchange_rate_settings', function (Blueprint $table) use ($ex_internal) {
             $table->uuid('id')->primary();
             $table->uuid('exchange_rate_id')->unique()->index();
-            $table->decimal('multiply_amount')->default(1)
+            $table->decimal('multiply_amount', 11, 2)->default(1)
                 ->comment('Destination Exchange Amount must be a multiply of this value');
-            $table->decimal('min_sell_amount')->default(0);
-            $table->decimal('max_sell_amount')->default(0);
+            $table->decimal('min_sell_amount', 11, 2)->default(0);
+            $table->decimal('max_sell_amount', 11, 2)->default(0);
             $table->uuid('created_by');
             $table->uuid('updated_by');
             $table->timestamps();
